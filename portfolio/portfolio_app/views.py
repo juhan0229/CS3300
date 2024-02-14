@@ -4,3 +4,10 @@ from django.http import HttpResponse
 def index(request):
 # Render index.html
    return render( request, 'portfolio_app/index.html')
+
+
+def login():
+    return render("Login")
+
+def logout():
+    return render("Logout")
