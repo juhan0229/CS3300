@@ -9,5 +9,5 @@ urlpatterns = [
 # example in html <a href="{% url 'index' %}">Home</a>.
     path('', views.index, name='index'),
     path('', views.logout, name='logout'),
-    # path('', views.login, name='login'),
+    path('', views.login, name='login'),
 ]
