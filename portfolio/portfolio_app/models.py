@@ -4,10 +4,34 @@ from django.urls import reverse
 
 
 # Create your models here.
+class Project(models.Model):
+	title = models.CharField(max_length=200)
+	description = models.TextField(blank=True)
+	#Define default String to return the name for representing the Model object."
+	def __str__(self):
+		return self.title
 
+	def get_absolute_url(self):
+		return reverse('project-detail', args=[str(self.id)])
+
+
+class Portfolio(models.Model):
+	title = models.CharField(max_length=200)
+	contact_email = models.CharField(max_length=200)
+	is_active = models.BooleanField(default=False)
+	about = models.TextField(blank=True)
+
+	# create one-to-one relationship with Student and Project
+	# student = models.OneToOneField(Student, on_delete=models.CASCADE, primary_key=True)
+	projects = models.ManyToManyField('Project', blank=True)
+
+	def get_absolute_url(self):
+		return reverse('portfolio-detail', args=[str(self.id)])
+	def __str__(self):
+		return self.title
 
 class Student(models.Model):
-#List of choices for major value in database, human readable name
+	#List of choices for major value in database, human readable name
 	MAJOR = [
 	('CSCI-BS', 'BS in Computer Science'),
 	('CPEN-BS', 'BS in Computer Engineering'),
@@ -20,15 +44,15 @@ class Student(models.Model):
 	name = models.CharField(max_length=200)
 	email = models.CharField("UCCS Email", max_length=200)
 	major = models.CharField(max_length=200, choices=MAJOR)
+	# create one-to-one relationship with Portfolio
+	portfolio = models.OneToOneField('Portfolio', on_delete=models.CASCADE, null=True, blank=True)
+
+	#Define default String to return the name for representing the Model object."
+	def __str__(self):
+		return self.name
+
+	def get_absolute_url(self):
+		return reverse('student-detail', args=[str(self.id)])
 
 
-#Define default String to return the name for representing the Model object."
-def __str__(self):
-	return self.name
 
-
-#Returns the URL to access a particular instance of MyModelName.
-#if you define this method then Django will automatically
-# add a "View on Site" button to the model's record editing screens in the Admin site
-def get_absolute_url(self):
-	return reverse('student-detail', args=[str(self.id)])
