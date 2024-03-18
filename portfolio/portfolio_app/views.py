@@ -1,19 +1,20 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Portfolio, Project, Student
-from .forms import PortfolioForm, ProjectForm
+from .forms import PortfolioForm, ProjectForm, StudentForm
+from django.views import generic
 
 
 # Create your views here.
 def index(request):
-    active_portfolios = Portfolio.objects.filter(active=True)
+    active_portfolios = Portfolio.objects.filter(is_active=True)
     return render(request, 'portfolio_app/index.html', {'active_portfolios': active_portfolios})
 
-def login():
-    return HttpResponse('login page')
+def login(): 
+    return render("Login") 
 
-def logout():
-    return HttpResponse('logout page')
+def logout(): 
+    return render("Logout") 
 
 class StudentDetailView(generic.DetailView): 
     model = Student 

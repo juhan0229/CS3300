@@ -8,6 +8,7 @@ class Portfolio(models.Model):
 	contact_email = models.CharField(max_length=200)
 	is_active = models.BooleanField(default=False)
 	about = models.TextField(blank=True)
+    
 
 	def __str__(self):
 		return self.title

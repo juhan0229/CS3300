@@ -6,10 +6,10 @@
 {% for portfolio in active_portfolios %}
 <div class="card mt-3">
     <div class="card-body">
-        <h5 class="card-title">Student Name: {{ portfolio.student_name }}</h5>
+        <h5 class="card-title">Student Name: {{ portfolio.student.name }}</h5>
         <h6 class="card-subtitle mb-2 text-muted">Portfolio Title: {{ portfolio.title }}</h6>
-        <p class="card-text">Description: {{ portfolio.description }}</p>
-        <a href="{{ url_for('portfolio_details', portfolio_id=portfolio.id) }}" class="btn btn-primary">View Portfolio</a>
+        <a href="{% url 'portfolio_detail' portfolio.id %}" class="btn btn-primary">View Portfolio</a>
+        
     </div>
 </div>
 {% endfor %}
