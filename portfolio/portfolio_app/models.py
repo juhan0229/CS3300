@@ -20,8 +20,7 @@ class Portfolio(models.Model):
 class Project(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    portfolio = models.ManyToOneRel('portfolio', on_delete=models.CASCADE, to='portfolio_app.portfolio', field_name='portfolio', related_name='portfolio', related_query_name='portfolio')
-    
+    portfolio = models.ForeignKey('Portfolio', on_delete=models.CASCADE)  
     #Define default String to return the name for representing the Model object."
     def __str__(self):
         return self.title
