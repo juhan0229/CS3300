@@ -2,12 +2,11 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-#path function defines a url pattern
-#'' is empty to represent based path to app
-# views.index is the function defined in views.py
-# name='index' parameter is to dynamically create url
-# example in html <a href="{% url 'index' %}">Home</a>.
     path('', views.index, name='index'),
-    path('', views.logout, name='logout'),
-    path('', views.login, name='login'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
+    path('project/create/', views.create_project, name='create_project'),  
+    path('project/<int:project_id>/', views.view_project, name='view_project'),
+    path('project/<int:project_id>/update/', views.update_project, name='update_project'),
+    path('project/<int:project_id>/delete/', views.delete_project, name='delete_project'),
 ]

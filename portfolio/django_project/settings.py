@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Add your app name here
     'portfolio_app',
+    'django_bootstrap5',
 
 ]
 
