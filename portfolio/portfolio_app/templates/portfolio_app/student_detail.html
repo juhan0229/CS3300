@@ -11,21 +11,21 @@ displays student details such as name, email, major, and the ability to view or 
 {% block content %} 
 
     <h1>Student Name: {{ student.name }}</h1> 
-
     <p><strong>Email:</strong> {{ student.email }}</p> 
-
     <p><strong>Major:</strong> {{ student.major }}</p> 
+    <p><strong>Portfolio: </strong> <a href="{% url 'portfolio_detail' pk=student.portfolio.pk %}">{{ student.portfolio.title }}</a></p> 
 
-    <p><strong>Portfolio: </strong> 
+    <a href="{% url 'update_portfolio' pk=student.portfolio.pk %}" class="btn btn-primary">Update Portfolio</a>
 
-       
+    <!-- List all projects in the portfolio -->
+    <h2>Projects</h2>
+    {% for project in student.portfolio.project_set.all %}
+        <div>
+            <p><strong>Title: {{ project.title }}</strong></p>
+            <p>Description: {{ project.description }}</p>
+        </div>
+    {% endfor %}
 
-<button onclick="document.location='{{ student.portfolio.get_absolute_url }}'">{{ student.portfolio.title }}</button> 
+    
 
-<button onclick="document.location='{% url 'portfolio-update' student.portfolio.id %}'">Update</button> 
-
-    </p> 
-
-     
-
-{% endblock %}  
+{% endblock %}

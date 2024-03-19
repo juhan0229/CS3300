@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Portfolio, Project, Student
 from .forms import PortfolioForm, ProjectForm, StudentForm
@@ -18,10 +18,21 @@ def logout():
 
 class StudentDetailView(generic.DetailView): 
     model = Student 
+    template_name = 'portfolio_app/student_detail.html'
+    context_object_name = 'student'
+    pk_url_kwarg = 'student_id'
 
-def portfolio_detail(request, portfolio_id):
-    portfolio = Portfolio.objects.get(pk=portfolio_id)
-    return render(request, 'portfolio_app/portfolio_detail.html', {'portfolio': portfolio})
+
+def student_list(request):
+    students = Student.objects.all()
+    return render(request, 'portfolio_app/student_list.html', {'students': students})
+
+
+def portfolio_detail(request, pk):
+    portfolio = get_object_or_404(Portfolio, pk=pk)
+    # Fetch related projects
+    projects = portfolio.project_set.all()  
+    return render(request, 'portfolio_app/portfolio_detail.html', {'portfolio': portfolio, 'projects': projects})
 
 def create_portfolio(request):
     if request.method == 'POST':
@@ -40,7 +51,7 @@ def create_project(request, portfolio_id):
             project = form.save(commit=False)
             project.portfolio = Portfolio.objects.get(pk=portfolio_id)
             project.save()
-            return redirect('portfolio_detail', portfolio_id=portfolio_id)
+            return redirect('portfolio_detail', pk=portfolio_id)  
     else:
         form = ProjectForm()
     return render(request, 'portfolio_app/create_project.html', {'form': form})
@@ -49,59 +60,43 @@ def view_project(request, project_id):
     project = Project.objects.get(pk=project_id)
     return render(request, 'portfolio_app/view_project.html', {'project': project})
 
-def update_project(request, project_id):
-    project = Project.objects.get(pk=project_id)
+def update_project(request, pk):  
+    project = Project.objects.get(pk=pk)
     if request.method == 'POST':
         form = ProjectForm(request.POST, instance=project)
         if form.is_valid():
             form.save()
-            return redirect('view_project', project_id=project_id)
+            return redirect('view_project', project_id=pk)  
     else:
         form = ProjectForm(instance=project)
     return render(request, 'portfolio_app/update_project.html', {'form': form})
 
+
+
 def delete_project(request, project_id):
-    project = Project.objects.get(pk=project_id)
+    project = get_object_or_404(Project, pk=project_id)
     if request.method == 'POST':
         project.delete()
-        return redirect('portfolio_detail', portfolio_id=project.portfolio.id)
+        return redirect('portfolio_detail', pk=project.portfolio.pk)
     return render(request, 'portfolio_app/delete_project.html', {'project': project})
 
-def delete_portfolio(request, portfolio_id):
-    portfolio = Portfolio.objects.get(pk=portfolio_id)
-    if request.method == 'POST':
-        portfolio.delete()
-        return redirect('index')
-    return render(request, 'portfolio_app/delete_portfolio.html', {'portfolio': portfolio})
+def delete_project_confirmation(request, project_id):
+    project = Project.objects.get(pk=project_id)
+    return render(request, 'portfolio_app/delete_project.html', {'project': project})
+
+
 
 def student_detail(request, student_id):
     student = Student.objects.get(pk=student_id)
     return render(request, 'portfolio_app/student_detail.html', {'student': student})
 
-def create_student(request):
+def update_portfolio(request, pk):
+    portfolio = Portfolio.objects.get(pk=pk)
     if request.method == 'POST':
-        form = StudentForm(request.POST)
-        if form.is_valid():
-            student = form.save()
-            return redirect('student_detail', student_id=student.id)
-    else:
-        form = StudentForm()
-    return render(request, 'portfolio_app/create_student.html', {'form': form})
-
-def update_student(request, student_id):
-    student = Student.objects.get(pk=student_id)
-    if request.method == 'POST':
-        form = StudentForm(request.POST, instance=student)
+        form = PortfolioForm(request.POST, instance=portfolio)
         if form.is_valid():
             form.save()
-            return redirect('student_detail', student_id=student_id)
+            return redirect('portfolio_detail', pk=pk) 
     else:
-        form = StudentForm(instance=student)
-    return render(request, 'portfolio_app/update_student.html', {'form': form})
-
-def delete_student(request, student_id):
-    student = Student.objects.get(pk=student_id)
-    if request.method == 'POST':
-        student.delete()
-        return redirect('index')
-    return render(request, 'portfolio_app/delete_student.html', {'student': student})
+        form = PortfolioForm(instance=portfolio)
+    return render(request, 'portfolio_app/update_portfolio.html', {'form': form})

@@ -7,7 +7,7 @@ class ProjectForm(ModelForm):
         model = Project
         fields = ['title', 'description']
 
-        
+
 class PortfolioForm(ModelForm):
     class Meta:
         model = Portfolio
@@ -17,4 +17,4 @@ class PortfolioForm(ModelForm):
 class StudentForm(ModelForm):
     class Meta:
         model = Student
-        fields = ['name', 'email', 'major']
+        fields = ['name', 'email', 'portfolio']

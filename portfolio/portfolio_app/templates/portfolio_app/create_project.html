@@ -1,19 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Project</title>
-</head>
+{% extends "portfolio_app/base_template.html" %} 
+
+  
+
+<!-- Replace block content in base_template.html --> 
+
+{% block content %} 
 <body>
-    <h1>Update Project</h1>
+    <h1>Create Project</h1>
     <form method="POST">
         {% csrf_token %}
-        <label for="title">Title:</label><br>
-        <input type="text" id="title" name="title" value="{{ project.title }}"><br>
-        <label for="description">Description:</label><br>
-        <textarea id="description" name="description">{{ project.description }}</textarea><br>
-        <button type="submit">Update Project</button>
+        <label for="title"><strong>Title:</strong></label><br>
+        <input type="text" id="title" name="title" value="{{ project.title }}" required><br>
+        <label for="description"><strong>Description:</strong></label><br>
+        <textarea id="description" name="description" style="width: 300px; height: 150px;">{{ project.description }}</textarea><br>
+        <button type="submit">Create Project</button>
     </form>
 </body>
 </html>
+{% endblock %} 
+

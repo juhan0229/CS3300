@@ -5,10 +5,11 @@
 
 {% for portfolio in active_portfolios %}
 <div class="card mt-3">
-    <div class="card-body">
-        <h5 class="card-title">Student Name: {{ portfolio.student.name }}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Portfolio Title: {{ portfolio.title }}</h6>
-        <a href="{% url 'portfolio_detail' portfolio.id %}" class="btn btn-primary">View Portfolio</a>
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">Student Name: {{ portfolio.student.name }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Portfolio Title: {{ portfolio.title }}</h6>
+            <a href="{% url 'portfolio_detail' pk=portfolio.id %}" class="btn btn-primary">View Portfolio</a>
         
     </div>
 </div>
